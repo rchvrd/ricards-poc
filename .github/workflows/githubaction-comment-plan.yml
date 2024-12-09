@@ -67,6 +67,20 @@ jobs:
     - run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
       shell: bash
 
+    - name: Start LocalStack
+      run: |
+        docker run -d \
+        -p 127.0.0.1:4566:4566 \
+        -p 127.0.0.1:4510-4559:4510-4559 \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        localstack/localstack
+    - name: Wait for LocalStack to be ready
+      run: |
+        until curl -s http://localhost:4566/health | grep "\"s3\": \"running\""; do
+        echo "Waiting for LocalStack to be ready..."
+        sleep 5
+        done
+
     # Terraform Validation Steps
     - name: terraform validate ${{ inputs.stack }}
       uses: dflook/tofu-validate@v1
@@ -86,20 +100,6 @@ jobs:
           github.com/arvatoaws=oauth:${{ env.GITHUB_TOKEN }}
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
         TERRAFORM_ACTIONS_GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
-
-    - name: Start LocalStack
-      run: |
-        docker run -d \
-        -p 127.0.0.1:4566:4566 \
-        -p 127.0.0.1:4510-4559:4510-4559 \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        localstack/localstack
-    - name: Wait for LocalStack to be ready
-      run: |
-        until curl -s http://localhost:4566/health | grep "\"s3\": \"running\""; do
-        echo "Waiting for LocalStack to be ready..."
-        sleep 5
-        done
 
     # Install the latest version of Tofu CLI
     - name: Setup Tofu
