@@ -71,7 +71,7 @@ jobs:
     - name: terraform validate ${{ inputs.stack }}
       uses: dflook/tofu-validate@v1
       with:
-        path: ${{ inputs.stack }}
+        path: "."
       env:
         TERRAFORM_HTTP_CREDENTIALS: |
           github.com/arvatoaws=oauth:${{ env.GITHUB_TOKEN }}
@@ -80,7 +80,7 @@ jobs:
     - name: terraform fmt ${{ inputs.stack }}
       uses: dflook/tofu-fmt-check@v1
       with:
-        path: ${{ inputs.stack }}
+        path: "."
       env:
         TERRAFORM_HTTP_CREDENTIALS: |
           github.com/arvatoaws=oauth:${{ env.GITHUB_TOKEN }}
