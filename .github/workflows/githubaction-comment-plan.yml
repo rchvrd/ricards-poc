@@ -41,7 +41,7 @@ jobs:
       run:
         shell: bash
     env:
-      GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
     steps:
     # Expose and capture the job ID of the current job
