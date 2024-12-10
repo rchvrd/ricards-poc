@@ -91,6 +91,7 @@ jobs:
         done
         echo "LocalStack did not become ready in time."
         exit 1
+      shell: bash
 
     # Terraform Validation Steps
     - name: terraform validate ${{ inputs.stack }}
