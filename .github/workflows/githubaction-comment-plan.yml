@@ -79,15 +79,11 @@ jobs:
       run: |
         echo "Waiting for LocalStack to be ready..."
         for i in {1..30}; do
-          if curl -s http://localhost:4566/_localstack/health | grep "\"s3\": \"running\""; then
+          if curl -s http://localhost:4566/_localstack/health | grep "\"s3\": \"available\""; then
             echo "LocalStack is ready!"
             exit 0
           fi
           echo "Still waiting for LocalStack..."
-          echo "Here's Docker info in the meantime:"
-          docker ps
-          echo "Here's the CURL response:"
-          curl -s http://localhost:4566/_localstack/health || echo "Curl command failed with exit code $?"
           sleep 5
         done
         echo "LocalStack did not become ready in time."
