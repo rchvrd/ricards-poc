@@ -2,8 +2,8 @@ name: 'TofuPlan'
 
 on:
   push:
-    paths:
-      - 'main.tf'
+    branches:
+      - main
   workflow_call:
     inputs:
       region:
@@ -124,6 +124,9 @@ jobs:
       continue-on-error: true
       run: |
         cd ${{ inputs.stack }}
+        echo "Current directory: $(pwd)"
+        echo "Listing files in the current directory:"
+        ls -la
         # Bash script to build tofu plan command dynamically
         COMMAND="tofu plan -input=false -no-color -out=tfplan"
         SECRETS_JSON='${{ toJson(secrets) }}'
