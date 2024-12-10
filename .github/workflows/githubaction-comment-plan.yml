@@ -76,10 +76,17 @@ jobs:
         localstack/localstack
     - name: Wait for LocalStack to be ready
       run: |
-        until curl -s http://localhost:4566/health | grep "\"s3\": \"running\""; do
         echo "Waiting for LocalStack to be ready..."
-        sleep 5
+        for i in {1..30}; do
+            if curl -s http://localhost:4566/_localstack/health | grep "\"s3\": \"running\""; then
+            echo "LocalStack is ready!"
+            exit 0
+            fi
+            echo "Still waiting for LocalStack..."
+            sleep 5
         done
+        echo "LocalStack did not become ready in time."
+        exit 1
 
     # Terraform Validation Steps
     - name: terraform validate ${{ inputs.stack }}
