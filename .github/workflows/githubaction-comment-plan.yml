@@ -86,7 +86,7 @@ jobs:
           echo "Here's Docker info in the meantime:"
           docker ps
           echo "Here's the CURL:"
-          curl -s http://localhost:4566/_localstack/health | grep "\"s3\": \"running\""
+          curl -s http://localhost:4566/_localstack/health
           sleep 5
         done
         echo "LocalStack did not become ready in time."
