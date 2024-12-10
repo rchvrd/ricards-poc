@@ -69,7 +69,7 @@ jobs:
         echo "Current directory: $(pwd)"
         echo "Listing files in the current directory:"
         ls -la
-        cd /home/runner/work/${{ env.REPOSITORY_NAME }}/${{ env.REPOSITORY_NAME }}
+        cd /home/runner/work/ricards-poc/ricards-poc
         ls -la
       shell: bash
 
@@ -99,7 +99,7 @@ jobs:
     - name: terraform validate ${{ inputs.stack }}
       uses: dflook/tofu-validate@v1
       with:
-        path: "."
+        path: "/home/runner/work/ricards-poc/ricards-poc"
       env:
         TERRAFORM_HTTP_CREDENTIALS: |
           github.com/arvatoaws=oauth:${{ env.GITHUB_TOKEN }}
@@ -108,7 +108,7 @@ jobs:
     - name: terraform fmt ${{ inputs.stack }}
       uses: dflook/tofu-fmt-check@v1
       with:
-        path: "."
+        path: "/home/runner/work/ricards-poc/ricards-poc"
       env:
         TERRAFORM_HTTP_CREDENTIALS: |
           github.com/arvatoaws=oauth:${{ env.GITHUB_TOKEN }}
@@ -121,7 +121,7 @@ jobs:
     # Initialize Terraform
     - name: Tofu Init
       run: |
-        cd ${{ inputs.stack }}
+        cd /home/runner/work/ricards-poc/ricards-poc
         rm -rf .terraform .terraform.lock.hcl
         tofu init -upgrade
     # Generate tofu plan
@@ -129,7 +129,7 @@ jobs:
       id: tfplan
       continue-on-error: true
       run: |
-        cd ${{ inputs.stack }}
+        cd /home/runner/work/ricards-poc/ricards-poc
         echo "Current directory: $(pwd)"
         echo "Listing files in the current directory:"
         ls -la
@@ -152,7 +152,7 @@ jobs:
     # Display the plan in logs
     - name: Display ${{ inputs.stack }} plan
       run: |
-        cd ${{ inputs.stack }}
+        cd /home/runner/work/ricards-poc/ricards-poc
         cat tfplan
 
     - name: Stop LocalStack
