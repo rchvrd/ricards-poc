@@ -162,4 +162,10 @@ jobs:
 
     - name: Stop LocalStack
       run: |
-        docker stop $(docker ps -q --filter ancestor=localstack_local_copy:latest)
+        CONTAINER_IDS=$(docker ps -q --filter ancestor=localstack_local_copy:latest)
+        if [ -n "$CONTAINER_IDS" ]; then
+          docker stop $CONTAINER_IDS
+        else
+          echo "No running LocalStack containers found."
+        fi
+      shell: bash
