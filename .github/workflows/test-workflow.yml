@@ -73,16 +73,20 @@ jobs:
         ls -la
       shell: bash
 
+    - name: Build LocalStack Docker Image
+      if: ${{ inputs.action == 'start' }}
+      run: |
+        docker build -t localstack_local_copy:latest .
+      shell: bash
+
     - name: Start LocalStack
+      if: ${{ inputs.action == 'start' }}
       run: |
         docker run -d --name localstack_container \
         -p 127.0.0.1:4566:4566 \
         -p 127.0.0.1:4510-4559:4510-4559 \
         -v /var/run/docker.sock:/var/run/docker.sock \
-        localstack/localstack
-    
-    - name: Wait for LocalStack to be ready
-      run: |
+        localstack_local_copy:latest
         echo "Waiting for LocalStack to be ready..."
         for i in {1..30}; do
           if curl -s http://localhost:4566/_localstack/health | grep "\"s3\": \"available\""; then
@@ -94,6 +98,7 @@ jobs:
         done
         echo "LocalStack did not become ready in time."
         exit 1
+      shell: bash
 
     # Terraform Validation Steps
     - name: terraform validate ${{ inputs.stack }}
