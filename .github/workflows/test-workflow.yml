@@ -74,13 +74,11 @@ jobs:
       shell: bash
 
     - name: Build LocalStack Docker Image
-      if: ${{ inputs.action == 'start' }}
       run: |
         docker build -t localstack_local_copy:latest . 
       shell: bash
 
     - name: Start LocalStack
-      if: ${{ inputs.action == 'start' }}
       run: |
         docker run -d --name localstack_container \
         -p 127.0.0.1:4566:4566 \
