@@ -36,9 +36,9 @@ EXPOSE map[4510/tcp:{} 4511/tcp:{} 4512/tcp:{} 4513/tcp:{}
 HEALTHCHECK &{["CMD-SHELL" ".venv/bin/localstack status services
 VOLUME [/var/lib/localstack]
 RUN |1 LOCALSTACK_BUILD_VERSION=4.0.4.dev39 /bin/bash -c
-LABEL authors=LocalStack Contributors
-LABEL maintainer=LocalStack Team (info@localstack.cloud)
-LABEL description=LocalStack Docker image
+LABEL authors="LocalStack Contributors"
+LABEL maintainer="LocalStack Team (info@localstack.cloud)"
+LABEL description="LocalStack Docker image"
 ARG LOCALSTACK_BUILD_DATE
 ARG LOCALSTACK_BUILD_GIT_HASH
 ENV LOCALSTACK_BUILD_DATE=2024-12-12
