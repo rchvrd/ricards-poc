@@ -74,24 +74,14 @@ jobs:
       shell: bash
 
     - name: Start LocalStack
-      run: |
-        docker run -d --name localstack \
-        -p 127.0.0.1:4566:4566 \
-        -p 127.0.0.1:4510-4559:4510-4559 \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        localstack/localstack
-        echo "Waiting for LocalStack to be ready..."
-        for i in {1..30}; do
-          if curl -s http://localhost:4566/_localstack/health | grep "\"s3\": \"available\""; then
-            echo "LocalStack is ready!"
-            exit 0
-          fi
-          echo "Still waiting for LocalStack..."
-          sleep 5
-        done
-        echo "LocalStack did not become ready in time."
-        exit 1
-      shell: bash
+      uses: rchvrd/localstack-basic@v1
+      with:
+        action: start
+
+    - name: Prepare env & TF entrypoint for LocalStack
+      uses: rchvrd/localstack-basic@v1
+      with:
+        action: prepare
 
     # Terraform Validation Steps
     - name: terraform validate ${{ inputs.stack }}
@@ -147,18 +137,7 @@ jobs:
         # Execute the dynamically generated tofu command
         eval $COMMAND && tofu show -no-color tfplan | sed 's/\x27/ /g' | sed -E 's/^([[:space:]]+)([-+])/\2\1/g' > plan.txt
 
-    # Display the plan in logs
-    - name: Display ${{ inputs.stack }} plan
-      run: |
-        cd /home/runner/work/ricards-poc/ricards-poc
-        cat tfplan
-
     - name: Stop LocalStack
-      run: |
-        CONTAINER_IDS=$(docker ps -q --filter ancestor=localstack/localstack)
-        if [ -n "$CONTAINER_IDS" ]; then
-          docker stop $CONTAINER_IDS
-        else
-          echo "No running LocalStack containers found."
-        fi
-      shell: bash
+      uses: rchvrd/localstack-basic@v1
+      with:
+        action: stop
