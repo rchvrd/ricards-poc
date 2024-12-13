@@ -77,11 +77,25 @@ jobs:
       uses: rchvrd/localstack-basic@v1.2
       with:
         action: start
+    - run: |
+        echo "Current directory: $(pwd)"
+        echo "Listing files in the current directory:"
+        ls -la
+        cd /home/runner/work/ricards-poc/ricards-poc
+        ls -la
+      shell: bash
 
     - name: Prepare env & TF entrypoint for LocalStack
       uses: rchvrd/localstack-basic@v1.2
       with:
         action: prepare
+    - run: |
+        echo "Current directory: $(pwd)"
+        echo "Listing files in the current directory:"
+        ls -la
+        cd /home/runner/work/ricards-poc/ricards-poc
+        ls -la
+      shell: bash
 
     # Terraform Validation Steps
     - name: terraform validate ${{ inputs.stack }}
