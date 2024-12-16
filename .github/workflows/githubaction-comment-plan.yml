@@ -65,6 +65,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - run: |
+        echo "THIS IS WORKFLOW'S CHECKOUT"
         echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
         echo "Current directory: $(pwd)"
         echo "Listing files in the current directory:"
@@ -74,10 +75,11 @@ jobs:
       shell: bash
 
     - name: Start LocalStack
-      uses: rchvrd/localstack-basic@v1.2
+      uses: rchvrd/localstack-basic@v1.3
       with:
         action: start
     - run: |
+        echo "THIS IS WORKFLOW'S START LOCALSTACK"
         echo "Current directory: $(pwd)"
         echo "Listing files in the current directory:"
         ls -la
@@ -86,7 +88,7 @@ jobs:
       shell: bash
 
     - name: Prepare env & TF entrypoint for LocalStack
-      uses: rchvrd/localstack-basic@v1.2
+      uses: rchvrd/localstack-basic@v1.3
       with:
         action: prepare
     - run: |
@@ -152,6 +154,6 @@ jobs:
         eval $COMMAND && tofu show -no-color tfplan | sed 's/\x27/ /g' | sed -E 's/^([[:space:]]+)([-+])/\2\1/g' > plan.txt
 
     - name: Stop LocalStack
-      uses: rchvrd/localstack-basic@v1.2
+      uses: rchvrd/localstack-basic@v1.3
       with:
         action: stop
