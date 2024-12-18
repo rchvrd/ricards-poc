@@ -75,7 +75,7 @@ jobs:
       shell: bash
 
     - name: Prepare env & TF entrypoint for LocalStack
-      uses: rchvrd/localstack-basic@v3.4
+      uses: rchvrd/localstack-basic@v3.5
       with:
         action: prepare
     - run: |
@@ -88,7 +88,7 @@ jobs:
       shell: bash
 
     - name: Start LocalStack
-      uses: rchvrd/localstack-basic@v3.4
+      uses: rchvrd/localstack-basic@v3.5
       with:
         action: start
     - run: |
@@ -155,6 +155,6 @@ jobs:
         eval $COMMAND && tofu show -no-color tfplan | sed 's/\x27/ /g' | sed -E 's/^([[:space:]]+)([-+])/\2\1/g' > plan.txt
 
     - name: Stop LocalStack
-      uses: rchvrd/localstack-basic@v3.4
+      uses: rchvrd/localstack-basic@v3.5
       with:
         action: stop
