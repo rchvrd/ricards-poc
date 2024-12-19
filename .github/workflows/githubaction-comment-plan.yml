@@ -64,41 +64,16 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
-    - run: |
-        echo "THIS IS WORKFLOW'S CHECKOUT STEP"
-        echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
-        echo "Current directory: $(pwd)"
-        echo "Listing files in the current directory:"
-        ls -la
-        cd /home/runner/work/ricards-poc/ricards-poc
-        ls -la
-      shell: bash
 
     - name: Prepare env & TF entrypoint for LocalStack
-      uses: rchvrd/localstack-basic@v3.7
+      uses: rchvrd/localstack-basic@v3.8
       with:
         action: prepare
-    - run: |
-        echo "THIS IS WORKFLOW CALLING MY ACTION TO PREPARE LOCALSTACK"
-        echo "Current directory: $(pwd)"
-        echo "Listing files in the current directory:"
-        ls -la
-        cd /home/runner/work/ricards-poc/ricards-poc
-        ls -la
-      shell: bash
 
     - name: Start LocalStack
-      uses: rchvrd/localstack-basic@v3.7
+      uses: rchvrd/localstack-basic@v3.8
       with:
         action: start
-    - run: |
-        echo "THIS IS WORKFLOW CALLING MY ACTION TO START LOCALSTACK"
-        echo "Current directory: $(pwd)"
-        echo "Listing files in the current directory:"
-        ls -la
-        cd /home/runner/work/ricards-poc/ricards-poc
-        ls -la
-      shell: bash
 
     # Terraform Validation Steps
     - name: terraform validate ${{ inputs.stack }}
@@ -135,9 +110,6 @@ jobs:
       continue-on-error: true
       run: |
         cd /home/runner/work/ricards-poc/ricards-poc
-        echo "Current directory: $(pwd)"
-        echo "Listing files in the current directory:"
-        ls -la
         # Bash script to build tofu plan command dynamically
         COMMAND="tofu plan -input=false -no-color -out=tfplan"
         SECRETS_JSON='${{ toJson(secrets) }}'
@@ -155,6 +127,6 @@ jobs:
         eval $COMMAND && tofu show -no-color tfplan | sed 's/\x27/ /g' | sed -E 's/^([[:space:]]+)([-+])/\2\1/g' > plan.txt
 
     - name: Stop LocalStack
-      uses: rchvrd/localstack-basic@v3.7
+      uses: rchvrd/localstack-basic@v3.8
       with:
         action: stop
