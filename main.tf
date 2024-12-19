@@ -8,9 +8,9 @@ terraform {
 }
 
 provider "aws" {
-  region                      = "us-west-2"
-  access_key                  = "mock_access_key"
-  secret_key                  = "mock_secret_key"
+  region     = "us-west-2"
+  access_key = "mock_access_key"
+  secret_key = "mock_secret_key"
 }
 
 resource "aws_s3_bucket" "example_bucket" {
