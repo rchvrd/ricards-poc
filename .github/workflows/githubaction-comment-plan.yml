@@ -75,9 +75,8 @@ jobs:
       with:
         action: start
 
-    # Terraform Validation Steps
-    - name: terraform validate ${{ inputs.stack }}
-      uses: dflook/tofu-validate@v1
+    - name: terraform fmt ${{ inputs.stack }}
+      uses: dflook/tofu-fmt-check@v1
       with:
         path: "/home/runner/work/ricards-poc/ricards-poc"
       env:
@@ -85,8 +84,10 @@ jobs:
           github.com/arvatoaws=oauth:${{ env.GITHUB_TOKEN }}
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
         TERRAFORM_ACTIONS_GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
-    - name: terraform fmt ${{ inputs.stack }}
-      uses: dflook/tofu-fmt-check@v1
+
+    # Terraform Validation Steps
+    - name: terraform validate ${{ inputs.stack }}
+      uses: dflook/tofu-validate@v1
       with:
         path: "/home/runner/work/ricards-poc/ricards-poc"
       env:
