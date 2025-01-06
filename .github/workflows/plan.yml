@@ -1,0 +1,9 @@
+name: Plan against LocalStack
+
+jobs:
+  call-reusable-workflow:
+    uses: rchvrd/actions-pseudo-fork/.github/workflows/githubaction-comment-plan.yml@main
+    with:
+      stack: "/home/runner/work/ricards-poc/ricards-poc"
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
