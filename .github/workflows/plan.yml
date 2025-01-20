@@ -1,8 +1,13 @@
 name: Plan against LocalStack
 
+on:
+  issue_comment:
+    types: [created]
+
 jobs:
   call-reusable-workflow:
-    uses: rchvrd/actions-pseudo-fork/.github/workflows/githubaction-comment-plan.yml@main
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/plan') }}
+    uses: rchvrd/github-actions-aws-terraform/.github/workflows/githubaction-comment-plan.yml@main
     with:
       stack: "/home/runner/work/ricards-poc/ricards-poc"
     secrets:
