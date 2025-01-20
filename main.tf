@@ -21,3 +21,12 @@ resource "aws_s3_bucket" "example_bucket" {
     Environment = "Dev"
   }
 }
+
+resource "aws_s3_bucket" "example_bucket2" {
+  bucket = "s3-example-bucket"
+
+  tags = {
+    Purpose     = "TestLocalStack"
+    Environment = "Dev"
+  }
+}
