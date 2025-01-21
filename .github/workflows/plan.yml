@@ -16,5 +16,5 @@ jobs:
     uses: rchvrd/github-actions-aws-terraform/.github/workflows/githubaction-comment-plan.yml@main
     with:
       stack: "/home/runner/work/ricards-poc/ricards-poc"
-    env:
+    secrets:
       GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
